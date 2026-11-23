@@ -1,0 +1,50 @@
+# ---- Secrets / environment ----
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# ---- PHP / Laravel ----
+backend/vendor/
+backend/node_modules/
+backend/public/hot
+backend/public/storage
+backend/public/build
+backend/storage/*.key
+backend/storage/pail
+backend/.phpunit.result.cache
+backend/.phpunit.cache
+backend/database/*.sqlite
+backend/database/*.sqlite-journal
+
+# ---- Node / JS ----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---- Python (in case of tooling scripts) ----
+venv/
+.venv/
+__pycache__/
+
+# ---- Cache / logs ----
+*.log
+*.cache
+.cache/
+
+# ---- Uploaded files (student PDF reports) ----
+backend/storage/app/private/*
+!backend/storage/app/private/.gitignore
+
+# ---- AI agent instruction files ----
+AGENTS.md
+
+# ---- OS / Editor ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp

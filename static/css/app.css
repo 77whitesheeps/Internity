@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Internity - Custom styles (overrides Bootstrap 5)
+   Load AFTER vendor/bootstrap/css/bootstrap.min.css
+   ========================================================================== */
+
+:root {
+    /* Brand palette - tweak here to re-theme the whole app */
+    --int-primary: #4f46e5;
+    --int-primary-dark: #3730a3;
+    --int-success: #16a34a;
+    --int-warning: #f59e0b;
+    --int-danger: #dc2626;
+    --int-surface: #f8fafc;
+    --int-text: #0f172a;
+    --int-radius: 0.75rem;
+
+    /* Map onto Bootstrap's CSS variables */
+    --bs-primary: var(--int-primary);
+    --bs-body-bg: var(--int-surface);
+    --bs-body-color: var(--int-text);
+    --bs-border-radius: var(--int-radius);
+}

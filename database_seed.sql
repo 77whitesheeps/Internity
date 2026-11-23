@@ -1,0 +1,13 @@
+-- =============================================================================
+-- Internity - sample seed data (MySQL 8)
+-- -----------------------------------------------------------------------------
+-- The schema itself is created by Laravel migrations:
+--     cd backend && php artisan migrate
+-- This file will hold demo rows (users per role, companies, logs, etc.) so the
+-- panel can test the system immediately. Equivalent Laravel seeders live in
+-- backend/database/seeders and can be run with: php artisan db:seed
+--
+-- NOTE: Passwords below must be bcrypt hashes - never plaintext.
+-- =============================================================================
+
+-- TODO (Sprint 2): populate once migrations are finalized.
