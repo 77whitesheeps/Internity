@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -103,12 +104,9 @@ Route::middleware('auth')->group(function () {
         ->name('admin.')
         ->middleware('role:administrator')
         ->group(function () {
-
-        Route::get('/dashboard', function () {
-            return 'Administrator dashboard placeholder.';
-        })->name('dashboard');
-
-    });
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+                ->name('dashboard');
+        });
 
     /*
     |--------------------------------------------------------------------------
@@ -121,11 +119,12 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:faculty_advisor')
         ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return 'Faculty Advisor dashboard placeholder.';
-        })->name('dashboard');
+            Route::get('/dashboard', function () {
+                return view('dashboards.faculty');
+            })->name('dashboard');
 
-    });
+        });
+
 
     /*
     |--------------------------------------------------------------------------
@@ -133,16 +132,18 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
+
     Route::prefix('mentor')
         ->name('mentor.')
         ->middleware('role:industry_mentor')
         ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return 'Industry Mentor dashboard placeholder.';
-        })->name('dashboard');
+            Route::get('/dashboard', function () {
+                return view('dashboards.mentor');
+            })->name('dashboard');
 
-    });
+        });
+
 
     /*
     |--------------------------------------------------------------------------
