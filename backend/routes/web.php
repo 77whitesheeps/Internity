@@ -5,6 +5,10 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Faculty\DashboardController as FacultyDashboardController;
+use App\Http\Controllers\Mentor\DashboardController as MentorDashboardController;
+use App\Http\Controllers\Supervisor\PlacementManagementController;
+use App\Http\Controllers\Supervisor\StudentManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
 })->name('home');
 
 /*
@@ -96,9 +102,26 @@ Route::middleware('auth')->group(function () {
         ->name('faculty.')
         ->middleware('role:faculty_advisor')
         ->group(function () {
-            Route::get('/dashboard', function () {
-                return view('dashboards.faculty');
-            })->name('dashboard');
+            Route::get('/dashboard', [FacultyDashboardController::class, 'index'])
+                ->name('dashboard');
+
+            // Module 1: Student Management & Assignment
+            Route::get('/students', [StudentManagementController::class, 'index'])
+                ->name('students.index');
+            Route::get('/students/search', [StudentManagementController::class, 'search'])
+                ->name('students.search');
+            Route::get('/students/{student}', [StudentManagementController::class, 'show'])
+                ->name('students.show');
+
+            // Internship Placements & Supervisor Assignments
+            Route::get('/placements', [PlacementManagementController::class, 'index'])
+                ->name('placements.index');
+            Route::post('/placements', [PlacementManagementController::class, 'store'])
+                ->name('placements.store');
+            Route::patch('/placements/{placement}/status', [PlacementManagementController::class, 'updateStatus'])
+                ->name('placements.status');
+            Route::put('/placements/{placement}/assign', [PlacementManagementController::class, 'assignSupervisors'])
+                ->name('placements.assign');
         });
 
     // Industry Mentor
@@ -106,9 +129,16 @@ Route::middleware('auth')->group(function () {
         ->name('mentor.')
         ->middleware('role:industry_mentor')
         ->group(function () {
-            Route::get('/dashboard', function () {
-                return view('dashboards.mentor');
-            })->name('dashboard');
+            Route::get('/dashboard', [MentorDashboardController::class, 'index'])
+                ->name('dashboard');
+
+            // Module 1: Assigned Intern Management (read-only on placements)
+            Route::get('/interns', [StudentManagementController::class, 'index'])
+                ->name('interns.index');
+            Route::get('/interns/search', [StudentManagementController::class, 'search'])
+                ->name('interns.search');
+            Route::get('/interns/{student}', [StudentManagementController::class, 'show'])
+                ->name('interns.show');
         });
 
     // Student

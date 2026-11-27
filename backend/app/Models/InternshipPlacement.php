@@ -40,4 +40,16 @@ class InternshipPlacement extends Model
     {
         return $this->hasMany(SupervisorAssignment::class, 'placement_id');
     }
+
+    /**
+     * Cast placement dates and hours to native types.
+     */
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'required_hours' => 'float',
+        ];
+    }
 }

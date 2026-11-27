@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 // Relationship imports
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable(['name', 'email', 'password', 'role_id'])]
@@ -43,6 +44,14 @@ class User extends Authenticatable
     public function supervisorProfile(): HasOne
     {
         return $this->hasOne(SupervisorProfile::class);
+    }
+
+    /**
+     * Get the internship placements supervised by this user.
+     */
+    public function supervisorAssignments(): HasMany
+    {
+        return $this->hasMany(SupervisorAssignment::class, 'supervisor_id');
     }
 
     /**

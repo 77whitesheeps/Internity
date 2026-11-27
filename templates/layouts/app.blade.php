@@ -130,9 +130,16 @@
 
                     <div class="sidebar-section-label">Student Management</div>
 
-                    <a href="#" class="sidebar-link sidebar-placeholder">
+                    <a href="{{ route('faculty.students.index') }}"
+                       class="sidebar-link {{ request()->routeIs('faculty.students.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>My Students</span>
+                    </a>
+
+                    <a href="{{ route('faculty.placements.index') }}"
+                       class="sidebar-link {{ request()->routeIs('faculty.placements.*') ? 'active' : '' }}">
+                        <i class="bi bi-briefcase"></i>
+                        <span>Placements &amp; Assignments</span>
                     </a>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
@@ -193,7 +200,8 @@
 
                     <div class="sidebar-section-label">Intern Management</div>
 
-                    <a href="#" class="sidebar-link sidebar-placeholder">
+                    <a href="{{ route('mentor.interns.index') }}"
+                       class="sidebar-link {{ request()->routeIs('mentor.interns.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>My Interns</span>
                     </a>

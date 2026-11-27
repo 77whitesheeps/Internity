@@ -31,7 +31,7 @@
                         <span class="text-secondary small fw-semibold">Assigned Students</span>
                         <i class="bi bi-people-fill fs-4 text-warning"></i>
                     </div>
-                    <h3 class="fw-bold mb-1">--</h3>
+                    <h3 class="fw-bold mb-1">{{ number_format($counts['assignedStudents'] ?? 0) }}</h3>
                     <small class="text-secondary">Students under your supervision</small>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                         <span class="text-secondary small fw-semibold">Active Interns</span>
                         <i class="bi bi-briefcase-fill fs-4 text-warning"></i>
                     </div>
-                    <h3 class="fw-bold mb-1">--</h3>
+                    <h3 class="fw-bold mb-1">{{ number_format($counts['activeInterns'] ?? 0) }}</h3>
                     <small class="text-secondary">Students currently undergoing OJT</small>
                 </div>
             </div>
@@ -84,17 +84,41 @@
         <div class="col-12 col-xl-7">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-1">My Students</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h5 class="fw-bold mb-0">My Students</h5>
+                        <a href="{{ route('faculty.students.index') }}" class="btn btn-sm btn-outline-secondary">
+                            View All
+                        </a>
+                    </div>
                     <p class="text-secondary small mb-4">
                         Overview of students assigned to you.
                     </p>
 
-                    <div class="text-center py-5">
-                        <i class="bi bi-people fs-1 text-secondary"></i>
-                        <p class="text-secondary mt-3 mb-0">
-                            Your assigned students will appear here.
-                        </p>
-                    </div>
+                    @forelse ($recentStudents ?? [] as $item)
+                        @php($placement = $item['placement'])
+                        <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+                            <div>
+                                <div class="fw-semibold">{{ $placement->student?->user?->name }}</div>
+                                <small class="text-secondary">
+                                    {{ $placement->student?->student_number }} &middot; {{ $placement->company?->company_name }}
+                                </small>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-secondary">{{ ucfirst($placement->status) }}</span>
+                                <a href="{{ route('faculty.students.show', $placement->student) }}"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Inspect
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-5">
+                            <i class="bi bi-people fs-1 text-secondary"></i>
+                            <p class="text-secondary mt-3 mb-0">
+                                Your assigned students will appear here.
+                            </p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
