@@ -3,7 +3,14 @@
 
 @section('title', 'Student Dashboard')
 
-@section('page-heading', 'Student Dashboard')
+@section('page-heading')
+    <div>
+        <h4 class="mb-1 fw-bold">Student Dashboard</h4>
+        <p class="text-secondary mb-0 small">
+            Welcome back, {{ auth()->user()->name }}. Here's your internship workspace.
+        </p>
+    </div>
+@endsection
 
 @section('content')
 

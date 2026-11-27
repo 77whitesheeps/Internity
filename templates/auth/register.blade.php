@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <!-- Registration Form (Interface Only) -->
+                    <!-- Registration Form -->
                     <form method="POST" action="{{ route('register.store') }}">
                         @csrf
                         @if ($errors->any())
@@ -99,6 +99,7 @@
                                     id="student_number"
                                     name="student_number"
                                     placeholder="Enter student number"
+                                    maxlength="50"
                                     value="{{ old('student_number') }}"
                                     required
                                 >
@@ -120,6 +121,7 @@
                                     id="contact_number"
                                     name="contact_number"
                                     placeholder="09XXXXXXXXX"
+                                    maxlength="30"
                                     autocomplete="tel"
                                     value="{{ old('contact_number') }}"
                                     required
@@ -149,6 +151,7 @@
                                 id="program"
                                 name="program"
                                 placeholder="Enter your academic program"
+                                maxlength="100"
                                 value="{{ old('program') }}"
                                 required
                             >
@@ -217,8 +220,9 @@
                                 name="email"
                                 placeholder="username@usm.edu.ph"
                                 autocomplete="email"
-                                pattern="^[^@\s]+@usm\.edu\.ph$"
+                                pattern="^[^@\s]+@[uU][sS][mM]\.[eE][dD][uU]\.[pP][hH]$"
                                 title="Use your official USM institutional email."
+                                maxlength="255"
                                 value="{{ old('email') }}"
                                 required
                             >
@@ -241,7 +245,8 @@
                                 class="form-control py-2 @error('password') is-invalid @enderror"
                                 id="password"
                                 name="password"
-                                placeholder="Create a password"
+                                placeholder="Create a password (at least 8 characters)"
+                                minlength="8"
                                 autocomplete="new-password"
                                 required
                             >
@@ -263,6 +268,7 @@
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 placeholder="Re-enter your password"
+                                minlength="8"
                                 autocomplete="new-password"
                                 required
                             >

@@ -23,8 +23,8 @@ class RoleMiddleware
             abort(401, 'Authentication is required.');
         }
 
-        // Retrieve the user's assigned role.
-        $userRole = $user->role->name;
+        // Retrieve the user's assigned role (null if none is assigned).
+        $userRole = $user->role?->name;
 
         // Check whether the user's role is permitted.
         if (!in_array($userRole, $roles, true)) {

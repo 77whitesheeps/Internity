@@ -42,20 +42,20 @@ class RegisteredUserController extends Controller
             'student_number' => [
                 'required',
                 'string',
-                'max:255',
+                'max:50',
                 'unique:student_profiles,student_number',
             ],
 
             'contact_number' => [
                 'required',
                 'string',
-                'max:255',
+                'max:30',
             ],
 
             'program' => [
                 'required',
                 'string',
-                'max:255',
+                'max:100',
             ],
 
             'year_level' => [

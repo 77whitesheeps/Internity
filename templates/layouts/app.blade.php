@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
       data-bs-theme="light">
@@ -6,22 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Dashboard') | Internity</title>
 
-    <!-- Bootstrap 5.3 CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    >
-
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter (falls back to system fonts when offline) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,296 +17,16 @@
         rel="stylesheet"
     >
 
-    <!-- Custom CSS -->
-    @vite(['resources/css/app.css'])
-
-    <style>
-        :root {
-            --internity-onyx: #0E1011;
-            --internity-gold: #FAC05E;
-            --internity-ghost: #F7F5FB;
-            --internity-green: #4DAA57;
-
-            --sidebar-width: 260px;
-            --sidebar-collapsed-width: 80px;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--internity-ghost);
-            color: var(--internity-onyx);
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-
-        .dashboard-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1040;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background-color: var(--internity-onyx);
-            color: white;
-            transition: width 0.25s ease, transform 0.25s ease;
-            overflow-x: hidden;
-        }
-
-        .sidebar-brand {
-            height: 76px;
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-            gap: 12px;
-            color: var(--internity-gold);
-            font-size: 1.25rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .sidebar-nav {
-            padding: 20px 12px;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 14px;
-            margin-bottom: 6px;
-            border-radius: 10px;
-            color: #c8c8c8;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: 0.2s ease;
-        }
-
-        .sidebar-link:hover {
-            background-color: #25292b;
-            color: white;
-        }
-
-        .sidebar-link.active {
-            background-color: var(--internity-gold);
-            color: var(--internity-onyx);
-            font-weight: 700;
-        }
-
-        .sidebar-link i {
-            font-size: 1.2rem;
-            min-width: 22px;
-            text-align: center;
-        }
-
-        .sidebar-section-label {
-            padding: 16px 14px 8px;
-            color: #888;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
-
-        /* Main content */
-
-        .dashboard-main {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            transition: margin-left 0.25s ease;
-        }
-
-        .dashboard-header {
-            height: 76px;
-            padding: 0 30px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e9e7ed;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1020;
-        }
-
-        .dashboard-content {
-            padding: 30px;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-icon-button {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            border-radius: 10px;
-            background: transparent;
-            color: var(--internity-onyx);
-            font-size: 1.2rem;
-        }
-
-        .header-icon-button:hover {
-            background-color: #f0eef3;
-        }
-
-        .profile-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--internity-gold);
-            color: var(--internity-onyx);
-            font-weight: 800;
-        }
-
-        .sidebar-toggle {
-            border: none;
-            background: transparent;
-            font-size: 1.3rem;
-            color: inherit;
-        }
-
-        /* Collapsed sidebar */
-
-        body.sidebar-collapsed .dashboard-sidebar {
-            width: var(--sidebar-collapsed-width);
-        }
-
-        body.sidebar-collapsed .dashboard-main {
-            margin-left: var(--sidebar-collapsed-width);
-        }
-
-        body.sidebar-collapsed .sidebar-brand span,
-        body.sidebar-collapsed .sidebar-link span,
-        body.sidebar-collapsed .sidebar-section-label {
-            display: none;
-        }
-
-        body.sidebar-collapsed .sidebar-brand {
-            justify-content: center;
-            padding: 0;
-        }
-
-        body.sidebar-collapsed .sidebar-link {
-            justify-content: center;
-            padding: 12px 0;
-        }
-
-        /* Dark mode */
-
-        body.dark-mode {
-            background-color: #181b1d;
-            color: var(--internity-ghost);
-        }
-
-        body.dark-mode .dashboard-header {
-            background-color: #202426;
-            border-color: #34393b;
-            color: white;
-        }
-
-        body.dark-mode .header-icon-button {
-            color: white;
-        }
-
-        body.dark-mode .header-icon-button:hover {
-            background-color: #34393b;
-        }
-
-        body.dark-mode .dashboard-content {
-            color: var(--internity-ghost);
-        }
-
-        body.dark-mode .card,
-        body.dark-mode .dropdown-menu,
-        body.dark-mode .modal-content {
-            background-color: #202426;
-            color: var(--internity-ghost);
-            border-color: #34393b;
-        }
-
-        body.dark-mode .text-muted {
-            color: #b4b4b4 !important;
-        }
-
-        body.dark-mode .dropdown-item {
-            color: var(--internity-ghost);
-        }
-
-        body.dark-mode .dropdown-item:hover {
-            background-color: #34393b;
-            color: white;
-        }
-
-        /* Mobile layout */
-
-        @media (max-width: 768px) {
-            .dashboard-sidebar {
-                transform: translateX(-100%);
-                width: var(--sidebar-width);
-            }
-
-            body.mobile-sidebar-open .dashboard-sidebar {
-                transform: translateX(0);
-            }
-
-            .dashboard-main {
-                margin-left: 0 !important;
-            }
-
-            body.sidebar-collapsed .dashboard-sidebar {
-                width: var(--sidebar-width);
-            }
-
-            body.sidebar-collapsed .sidebar-brand span,
-            body.sidebar-collapsed .sidebar-link span,
-            body.sidebar-collapsed .sidebar-section-label {
-                display: initial;
-            }
-
-            body.sidebar-collapsed .sidebar-brand {
-                justify-content: flex-start;
-                padding: 0 24px;
-            }
-
-            body.sidebar-collapsed .sidebar-link {
-                justify-content: flex-start;
-                padding: 12px 14px;
-            }
-
-            .dashboard-header {
-                padding: 0 16px;
-            }
-
-            .dashboard-content {
-                padding: 20px 16px;
-            }
-        }
-    </style>
+    <!-- Vite bundle: local Bootstrap 5, Bootstrap Icons, Internity CSS & Vanilla JS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="dashboard-body">
 
     @php
         $user = auth()->user();
-
-        $dashboardRoute = match ($user->role->name) {
-            'administrator' => 'admin.dashboard',
-            'faculty_advisor' => 'faculty.dashboard',
-            'industry_mentor' => 'mentor.dashboard',
-            'student' => 'student.dashboard',
-            default => 'login',
-        };
+        $roleName = $user?->role?->name;
+        $dashboardRoute = $user?->dashboardRoute() ?? 'home';
     @endphp
 
     <!-- Sidebar -->
@@ -331,18 +39,17 @@
 
         <nav class="sidebar-nav">
 
-            @switch($user->role->name)
+            @switch($roleName)
 
                 {{-- ========================================= --}}
-                {{-- STUDENT NAVIGATION                       --}}
+                {{-- STUDENT NAVIGATION                        --}}
                 {{-- ========================================= --}}
-
                 @case('student')
 
                     <div class="sidebar-section-label">Workspace</div>
 
                     <a href="{{ route('student.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
+                       class="sidebar-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -361,7 +68,7 @@
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-clock-history"></i>
-                        <span>Attendance & Time Tracking</span>
+                        <span>Attendance &amp; Time Tracking</span>
                     </a>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
@@ -398,27 +105,25 @@
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-cloud-arrow-up"></i>
-                        <span>Deliverables & Submissions</span>
+                        <span>Deliverables &amp; Submissions</span>
                     </a>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-clipboard-check"></i>
-                        <span>Evaluations & Feedback</span>
+                        <span>Evaluations &amp; Feedback</span>
                     </a>
 
                     @break
 
-
                 {{-- ========================================= --}}
                 {{-- FACULTY ADVISOR NAVIGATION                --}}
                 {{-- ========================================= --}}
-
                 @case('faculty_advisor')
 
                     <div class="sidebar-section-label">Workspace</div>
 
                     <a href="{{ route('faculty.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('faculty.dashboard') ? 'active' : '' }}">
+                       class="sidebar-link {{ request()->routeIs('faculty.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -461,29 +166,27 @@
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-flag"></i>
-                        <span>Milestones & Evaluations</span>
+                        <span>Milestones &amp; Evaluations</span>
                     </a>
 
                     <div class="sidebar-section-label">Analytics</div>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-bar-chart-line"></i>
-                        <span>Reports & Analytics</span>
+                        <span>Reports &amp; Analytics</span>
                     </a>
 
                     @break
 
-
                 {{-- ========================================= --}}
                 {{-- INDUSTRY MENTOR NAVIGATION                --}}
                 {{-- ========================================= --}}
-
                 @case('industry_mentor')
 
                     <div class="sidebar-section-label">Workspace</div>
 
                     <a href="{{ route('mentor.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}">
+                       class="sidebar-link {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -524,17 +227,15 @@
 
                     @break
 
-
                 {{-- ========================================= --}}
-                {{-- ADMINISTRATOR PLACEHOLDER                --}}
+                {{-- ADMINISTRATOR NAVIGATION                  --}}
                 {{-- ========================================= --}}
-
-
                 @case('administrator')
+
                     <div class="sidebar-section-label">Workspace</div>
 
                     <a href="{{ route('admin.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                       class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -569,7 +270,7 @@
                     </a>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
-                        <i class="bi bi-handshake-fill"></i>
+                        <i class="bi bi-diagram-3-fill"></i>
                         <span>Industry Partnerships</span>
                     </a>
 
@@ -601,18 +302,17 @@
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-person-gear"></i>
-                        <span>Roles & Permissions</span>
+                        <span>Roles &amp; Permissions</span>
                     </a>
 
                     <a href="#" class="sidebar-link sidebar-placeholder">
                         <i class="bi bi-bar-chart-fill"></i>
-                        <span>Reports & Analytics</span>
+                        <span>Reports &amp; Analytics</span>
                     </a>
+
                     @break
 
-
             @endswitch
-
 
             {{-- ACCOUNT SETTINGS --}}
             <div class="sidebar-section-label">Account</div>
@@ -621,10 +321,8 @@
                     class="sidebar-link w-100 border-0 bg-transparent text-start"
                     data-bs-toggle="modal"
                     data-bs-target="#settingsModal">
-
                 <i class="bi bi-gear-fill"></i>
                 <span>Settings</span>
-
             </button>
 
         </nav>
@@ -647,12 +345,14 @@
                 </button>
 
                 <div>
-                    <h5 class="mb-0 fw-bold">
-                        @yield('page-heading', 'Dashboard')
-                    </h5>
-                    <small class="text-muted d-none d-sm-block">
-                        Internity Management System
-                    </small>
+                    @hasSection('page-heading')
+                        @yield('page-heading')
+                    @else
+                        <h5 class="mb-0 fw-bold">Dashboard</h5>
+                        <small class="text-muted d-none d-sm-block">
+                            Internity Management System
+                        </small>
+                    @endif
                 </div>
 
             </div>
@@ -685,7 +385,7 @@
                                 {{ $user->name }}
                             </div>
                             <div class="text-muted" style="font-size: 0.75rem;">
-                                {{ ucwords(str_replace('_', ' ', $user->role->name)) }}
+                                {{ ucwords(str_replace('_', ' ', $roleName ?? 'unassigned')) }}
                             </div>
                         </div>
 
@@ -733,9 +433,7 @@
 
         <!-- Page content -->
         <main class="dashboard-content">
-
             @yield('content')
-
         </main>
 
     </div>
@@ -780,95 +478,6 @@
 
         </div>
     </div>
-
-    <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const body = document.body;
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = document.getElementById('themeIcon');
-            // Prevent navigation on unfinished sidebar links
-            document.querySelectorAll('.sidebar-placeholder').forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                });
-            });
-
-            // Restore saved sidebar preference
-            if (localStorage.getItem('internity-sidebar') === 'collapsed') {
-                body.classList.add('sidebar-collapsed');
-            }
-
-            // Restore saved theme preference
-            const savedTheme = localStorage.getItem('internity-theme');
-
-            if (savedTheme === 'dark') {
-                body.classList.add('dark-mode');
-                document.documentElement.setAttribute('data-bs-theme', 'dark');
-                themeIcon.className = 'bi bi-sun-fill';
-            }
-
-            // Sidebar toggle
-            sidebarToggle.addEventListener('click', function () {
-
-                if (window.innerWidth <= 768) {
-                    body.classList.toggle('mobile-sidebar-open');
-                    return;
-                }
-
-                body.classList.toggle('sidebar-collapsed');
-
-                localStorage.setItem(
-                    'internity-sidebar',
-                    body.classList.contains('sidebar-collapsed')
-                        ? 'collapsed'
-                        : 'expanded'
-                );
-            });
-
-            // Dark mode toggle
-            themeToggle.addEventListener('click', function () {
-
-                body.classList.toggle('dark-mode');
-
-                const isDark = body.classList.contains('dark-mode');
-
-                document.documentElement.setAttribute(
-                    'data-bs-theme',
-                    isDark ? 'dark' : 'light'
-                );
-
-                themeIcon.className = isDark
-                    ? 'bi bi-sun-fill'
-                    : 'bi bi-moon-stars-fill';
-
-                localStorage.setItem(
-                    'internity-theme',
-                    isDark ? 'dark' : 'light'
-                );
-            });
-
-            // Close mobile sidebar when clicking outside it
-            document.addEventListener('click', function (event) {
-
-                if (
-                    window.innerWidth <= 768 &&
-                    body.classList.contains('mobile-sidebar-open') &&
-                    !event.target.closest('.dashboard-sidebar') &&
-                    !event.target.closest('#sidebarToggle')
-                ) {
-                    body.classList.remove('mobile-sidebar-open');
-                }
-            });
-
-        });
-    </script>
-
-    @vite(['resources/js/app.js'])
 
     @stack('scripts')
 

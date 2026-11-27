@@ -17,7 +17,8 @@ class AdminUserSeeder extends Seeder
 
         if (!$name || !$email || !$password) {
             throw new RuntimeException(
-                'Administrator credentials must be configured in the environment.'
+                'Administrator credentials are missing. Set INTERNITY_ADMIN_NAME, '
+                .'INTERNITY_ADMIN_EMAIL, and INTERNITY_ADMIN_PASSWORD in backend/.env.'
             );
         }
 

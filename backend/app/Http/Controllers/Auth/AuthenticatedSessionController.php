@@ -49,18 +49,14 @@ class AuthenticatedSessionController extends Controller
         // Regenerate the session after successful login.
         $request->session()->regenerate();
 
-        // Retrieve the authenticated user's role.
-        $role = Auth::user()->role->name;
-
         // Redirect according to the user's role.
-        return match ($role) {
-            'administrator' => redirect()->route('admin.dashboard'),
-            'faculty_advisor' => redirect()->route('faculty.dashboard'),
-            'industry_mentor' => redirect()->route('mentor.dashboard'),
-            'student' => redirect()->route('student.dashboard'),
+        $route = Auth::user()->dashboardRoute();
 
-            default => $this->logoutInvalidRole($request),
-        };
+        if (! $route) {
+            return $this->logoutInvalidRole($request);
+        }
+
+        return redirect()->route($route);
     }
 
     /**

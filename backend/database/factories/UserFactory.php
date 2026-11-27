@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -25,12 +26,44 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'role_id' => fn () => Role::firstOrCreate(
+                ['name' => 'student'],
+                ['description' => 'Student trainee']
+            )->id,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Assign a specific role by name to the generated user.
+     */
+    public function withRole(string $roleName, ?string $description = null): static
+    {
+        return $this->state(fn () => [
+            'role_id' => Role::firstOrCreate(
+                ['name' => $roleName],
+                ['description' => $description ?? ucwords(str_replace('_', ' ', $roleName))]
+            )->id,
+        ]);
+    }
+
+    public function administrator(): static
+    {
+        return $this->withRole('administrator', 'System administrator');
+    }
+
+    public function facultyAdvisor(): static
+    {
+        return $this->withRole('faculty_advisor', 'Faculty internship advisor');
+    }
+
+    public function industryMentor(): static
+    {
+        return $this->withRole('industry_mentor', 'Industry internship mentor');
     }
 
     /**

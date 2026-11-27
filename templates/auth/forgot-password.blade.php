@@ -61,13 +61,13 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-internity w-100 py-2">
                             Send Password Reset Link
                         </button>
                     </form>
 
                     <div class="text-center mt-4">
-                        <a href="{{ route('login') }}" class="text-decoration-none">
+                        <a href="{{ route('login') }}" class="text-internity fw-semibold text-decoration-none">
                             <i class="bi bi-arrow-left me-1"></i>
                             Back to Login
                         </a>
