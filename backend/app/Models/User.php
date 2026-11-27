@@ -46,6 +46,23 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the named route for this user's role-specific dashboard.
+     *
+     * Single source of truth for role -> dashboard routing, shared by login,
+     * the /dashboard redirect, and the sidebar navigation shell.
+     */
+    public function dashboardRoute(): ?string
+    {
+        return match ($this->role?->name) {
+            'administrator' => 'admin.dashboard',
+            'faculty_advisor' => 'faculty.dashboard',
+            'industry_mentor' => 'mentor.dashboard',
+            'student' => 'student.dashboard',
+            default => null,
+        };
+    }
+
+    /**
      * Automatically hash passwords and cast email verification dates.
      */
     protected function casts(): array

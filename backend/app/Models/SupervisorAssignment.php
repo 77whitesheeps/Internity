@@ -2,9 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable([
+    'placement_id',
+    'supervisor_id',
+    'assignment_type',
+    'assigned_at',
+])]
 class SupervisorAssignment extends Model
 {
     /**
